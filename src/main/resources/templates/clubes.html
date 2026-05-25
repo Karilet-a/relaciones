@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Clubes</title>
+<style>
+body { font-family: Arial; background: #f0f4f8; padding: 20px; }
+nav { background: #2c3e50; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
+nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
+nav a:hover { color: #27ae60; }
+.container { display: flex; gap: 30px; flex-wrap: wrap; }
+.card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+.form-card { flex: 1; }
+.list-card { flex: 2; }
+input, select { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 5px; }
+select[multiple] { height: 100px; }
+.btn { background: #27ae60; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; width: 100%; }
+table { width: 100%; border-collapse: collapse; }
+th { background: #2c3e50; color: white; padding: 10px; }
+td { padding: 8px; border-bottom: 1px solid #ddd; text-align: center; }
+.badge { background: #2980b9; color: white; padding: 3px 8px; border-radius: 10px; font-size: 12px; }
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="/clubes">⚽ Clubes</a>
+    <a href="/entrenadores">🧑‍💼 Entrenadores</a>
+    <a href="/jugadores">🏃 Jugadores</a>
+    <a href="/asociaciones">🏛️ Asociaciones</a>
+    <a href="/competiciones">🏆 Competiciones</a>
+</nav>
+
+<h1>⚽ Gestión de Clubes</h1>
+<div class="container">
+    <div class="card form-card">
+        <h2>Registrar Club</h2>
+        <form th:action="@{/clubes/guardar}" th:object="${club}" method="post">
+            <label>Nombre del Club:</label>
+            <input type="text" th:field="*{nombre}" required/>
+            <label>Entrenador:</label>
+            <select th:field="*{entrenador}">
+                <option value="">-- Selecciona entrenador --</option>
+                <option th:each="e : ${entrenadores}" th:value="${e.id}" th:text="${e.nombre + ' ' + e.apellido}"></option>
+            </select>
+            <label>Asociación:</label>
+            <select th:field="*{asociacion}">
+                <option value="">-- Selecciona asociación --</option>
+                <option th:each="a : ${asociaciones}" th:value="${a.id}" th:text="${a.nombre + ' - ' + a.pais}"></option>
+            </select>
+            <label>Jugadores (Ctrl para varios):</label>
+            <select th:field="*{jugadores}" multiple>
+                <option th:each="j : ${jugadores}" th:value="${j.id}" th:text="${j.nombre + ' ' + j.apellido + ' #' + j.numero}"></option>
+            </select>
+            <label>Competiciones (Ctrl para varios):</label>
+            <select th:field="*{competiciones}" multiple>
+                <option th:each="c : ${competiciones}" th:value="${c.id}" th:text="${c.nombre}"></option>
+            </select>
+            <button class="btn" type="submit">Guardar Club</button>
+        </form>
+    </div>
+    <div class="card list-card">
+        <h2>Lista de Clubes</h2>
+        <table>
+            <tr><th>ID</th><th>Club</th><th>Entrenador</th><th>Asociación</th><th>Jugadores</th><th>Competiciones</th></tr>
+            <tr th:each="c : ${clubes}">
+                <td th:text="${c.id}"/>__
+                <td th:text="${c.nombre}"/>__
+                <td th:text="${c.entrenador != null ? c.entrenador.nombre + ' ' + c.entrenador.apellido : '-'}"/>__
+                <td th:text="${c.asociacion != null ? c.asociacion.nombre : '-'}"/>__
+                <td><span class="badge" th:text="${c.jugadores != null ? c.jugadores.size() : 0} + ' jugadores'"></span></td>
+                <td><span class="badge" th:text="${c.competiciones != null ? c.competiciones.size() : 0} + ' comp.'"></span></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

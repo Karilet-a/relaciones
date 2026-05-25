@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Competiciones</title>
+<style>
+body { font-family: Arial; background: #f0f4f8; padding: 20px; }
+nav { background: #2c3e50; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
+nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
+nav a:hover { color: #27ae60; }
+.container { display: flex; gap: 30px; flex-wrap: wrap; }
+.card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); flex: 1; }
+input { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 5px; }
+.btn { background: #27ae60; color: white; padding: 12px; border: none; border-radius: 5px; cursor: pointer; width: 100%; }
+table { width: 100%; border-collapse: collapse; }
+th { background: #2c3e50; color: white; padding: 10px; }
+td { padding: 8px; border-bottom: 1px solid #ddd; text-align: center; }
+</style>
+</head>
+<body>
+
+<nav>
+    <a href="/clubes">⚽ Clubes</a>
+    <a href="/entrenadores">🧑‍💼 Entrenadores</a>
+    <a href="/jugadores">🏃 Jugadores</a>
+    <a href="/asociaciones">🏛️ Asociaciones</a>
+    <a href="/competiciones">🏆 Competiciones</a>
+</nav>
+
+<h1>🏆 Gestión de Competiciones</h1>
+<div class="container">
+    <div class="card">
+        <h2>Registrar Competición</h2>
+        <form th:action="@{/competiciones/guardar}" th:object="${competicion}" method="post">
+            <label>Nombre:</label>
+            <input type="text" th:field="*{nombre}" required/>
+            <label>Monto Premio:</label>
+            <input type="number" th:field="*{montoPremio}" required/>
+            <label>Fecha Inicio:</label>
+            <input type="date" th:field="*{fechaInicio}" required/>
+            <label>Fecha Fin:</label>
+            <input type="date" th:field="*{fechaFin}" required/>
+            <button class="btn" type="submit">Guardar</button>
+        </form>
+    </div>
+    <div class="card">
+        <h2>Lista de Competiciones</h2>
+        <table border="1">
+            <tr>
+                <th>ID</th><th>Nombre</th><th>Premio</th><th>Inicio</th><th>Fin</th>
+            </tr>
+            <tr th:each="c : ${competiciones}">
+                <td th:text="${c.id}"></td>
+                <td th:text="${c.nombre}"></td>
+                <td th:text="${c.montoPremio}"></td>
+                <td th:text="${c.fechaInicio}"></td>
+                <td th:text="${c.fechaFin}"></td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

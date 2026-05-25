@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Asociaciones</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Arial; background: #f0f4f8; padding: 20px; }
+  nav { background: #2c3e50; padding: 15px; border-radius: 8px; margin-bottom: 25px; }
+  nav a { color: white; text-decoration: none; margin-right: 20px; font-weight: bold; }
+  nav a:hover { color: #27ae60; }
+  h1, h2 { color: #2c3e50; margin-bottom: 15px; }
+  .container { display: flex; gap: 30px; flex-wrap: wrap; }
+  .card { background: white; padding: 25px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .form-card { min-width: 320px; flex: 1; }
+  .list-card { flex: 2; }
+  label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 14px; }
+  input { width: 100%; padding: 10px; margin-bottom: 12px; border: 1px solid #ddd; border-radius: 5px; font-size: 14px; }
+  .btn { background: #27ae60; color: white; padding: 12px 25px; border: none; border-radius: 5px; cursor: pointer; font-size: 15px; width: 100%; }
+  .btn:hover { background: #219a52; }
+  table { width: 100%; border-collapse: collapse; }
+  th { background: #2c3e50; color: white; padding: 10px; font-size: 13px; }
+  td { padding: 9px; border-bottom: 1px solid #ddd; text-align: center; font-size: 13px; }
+  tr:hover { background: #f9f9f9; }
+</style>
+</head>
+<body>
+<nav>
+  <a href="/clubes">⚽ Clubes</a>
+  <a href="/entrenadores">🧑‍💼 Entrenadores</a>
+  <a href="/jugadores">🏃 Jugadores</a>
+  <a href="/asociaciones">🏛️ Asociaciones</a>
+  <a href="/competiciones">🏆 Competiciones</a>
+</nav>
+
+<h1>🏛️ Gestión de Asociaciones</h1>
+<div class="container">
+
+  <div class="card form-card">
+    <h2>➕ Registrar Asociación</h2>
+    <form th:action="@{/asociaciones/guardar}" th:object="${asociacion}" method="post">
+      <label>Nombre:</label>
+      <input type="text" th:field="*{nombre}" placeholder="Ej: FCF" required/>
+      <label>País:</label>
+      <input type="text" th:field="*{pais}" placeholder="Ej: Colombia" required/>
+      <label>Presidente:</label>
+      <input type="text" th:field="*{presidente}" placeholder="Ej: Ramon Jesurun" required/>
+      <br/>
+      <button class="btn" type="submit">💾 Guardar Asociación</button>
+    </form>
+  </div>
+
+  <div class="card list-card">
+    <h2>📋 Lista de Asociaciones</h2>
+    <table>
+      <tr><th>ID</th><th>Nombre</th><th>País</th><th>Presidente</th></tr>
+      <tr th:each="a : ${asociaciones}">
+        <td th:text="${a.id}"></td>
+        <td th:text="${a.nombre}"></td>
+        <td th:text="${a.pais}"></td>
+        <td th:text="${a.presidente}"></td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>
